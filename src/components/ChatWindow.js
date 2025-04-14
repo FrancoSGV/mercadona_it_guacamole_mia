@@ -16,68 +16,87 @@ const ChatWindow = () => {
         setMessages(prev => [...prev, { from: 'user', text: message }]);
         setMessage('');
 
-        // Procesar respuesta de MIA basada en palabra clave
         setTimeout(() => {
             let miaResponse = 'Lo siento, no entendí tu mensaje.';
             let image = null;
 
-            if (userMsg.includes('hola')) {
+            const lowerMsg = userMsg.toLowerCase();
+
+            if (lowerMsg.includes('hola')) {
                 miaResponse = '¡Hola! Soy MIA, el Asistente con IA de Mercadona 🧠🛒';
                 setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
                 return;
             }
 
-            if (userMsg.includes('receta')) {
+            if (lowerMsg.includes('receta')) {
                 miaResponse = '¡Claro! ¿Qué receta quieres hacer? 🍽️';
                 setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
                 return;
             }
 
-            if (userMsg.includes('paella')) {
-                // Llamada al backend para obtener ingredientes de la paella
-                fetch('http://localhost:8000/receta', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ receta: 'paella' })
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        const ingredientes = data.ingredientes?.join(', ') || 'ninguno';
-                        const disponibles = data.disponibles?.join(', ') || '';
+            if (lowerMsg.includes('paella')) {
+                const messagesToSend = [];
 
-                        let respuesta = `Para la paella necesitas: ${ingredientes}.`;
+                // Ingredientes
+                messagesToSend.push({
+                    from: 'mia',
+                    text: 'Para una paella necesitas: arroz, ajo, pimienta verde, pimienta roja, pollo, aceite de oliva, sal y azafrán.'
+                });
 
-                        if (disponibles.length > 0) {
-                            respuesta += ` Puedes hacer la receta con: ${disponibles}. ✅`;
-                        } else {
-                            respuesta += ` Lo siento, no hay stock de los ingredientes necesarios. ❌`;
-                        }
+                // Imagen opcional (si hay)
+                if (image) {
+                    messagesToSend.push({ from: 'mia', image });
+                }
 
-                        setMessages(prev => [...prev, { from: 'mia', text: respuesta }]);
-                    })
-                    .catch(error => {
-                        console.error('Error al obtener ingredientes:', error);
-                        setMessages(prev => [...prev, { from: 'mia', text: 'Hubo un error al consultar los ingredientes. 😢' }]);
-                    });
+                // Buscando en el stock
+                messagesToSend.push({
+                    from: 'mia',
+                    text: '🔎 Buscando en el stock...'
+                });
 
+                // Resultado de búsqueda
+                messagesToSend.push({
+                    from: 'mia',
+                    text: '✅ Se han encontrado ingredientes disponibles en la tienda de Carretera de Manises.'
+                });
+
+                setMessages(prev => [...prev, ...messagesToSend]);
                 return;
             }
 
-            if (userMsg.includes('leche')) {
+            if (lowerMsg.includes('prefiero comprar online')) {
+                const messagesToSend = [];
+
+                messagesToSend.push({
+                    from: 'mia',
+                    text: 'Perfecto, puedes añadir los ingredientes al carrito y comprarlos online 🛒'
+                });
+
+                messagesToSend.push({
+                    from: 'mia',
+                    type: 'buttons',
+                    buttons: [
+                        { text: 'Añadir al carrito' }
+                    ]
+                });
+
+                setMessages(prev => [...prev, ...messagesToSend]);
+                return;
+            }
+
+            if (lowerMsg.includes('leche')) {
                 miaResponse = '¡Claro! ¿Me permites acceder a tu ubicación? 🥛';
                 setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
                 return;
             }
 
-            if (userMsg.includes('no')) {
+            if (lowerMsg.includes('no')) {
                 miaResponse = '¡No hay problema! ¿Me puedes indicar en qué sede de Mercadona te encuentras?';
                 setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
                 return;
             }
 
-            if (userMsg.includes('paterna')) {
+            if (lowerMsg.includes('paterna')) {
                 setMessages(prev => [
                     ...prev,
                     {
@@ -99,7 +118,9 @@ const ChatWindow = () => {
             if (image) {
                 setMessages(prev => [...prev, { from: 'mia', image }]);
             }
+
         }, 800);
+
 
     };
 
