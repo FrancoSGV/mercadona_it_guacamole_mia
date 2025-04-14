@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './ChatWindow.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faCamera,faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const ChatWindow = () => {
     const [message, setMessage] = useState('');
@@ -120,13 +122,25 @@ const ChatWindow = () => {
             </div>
 
             <div className="input-area">
-                <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                    placeholder="Escribe tu mensaje..."
-                />
-                <button onClick={handleSend}>Enviar</button>
+                <div className="text-area-container">
+        <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+            placeholder="Escribe tu mensaje..."
+        />
+                    <div className="msg-buttons">
+                        <button>
+                            <FontAwesomeIcon icon={faCamera}/>
+                        </button>
+                        <button>
+                            <FontAwesomeIcon icon={faMicrophone}/>
+                        </button>
+                        <button onClick={handleSend}>
+                            <FontAwesomeIcon icon={faPaperPlane}/>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );

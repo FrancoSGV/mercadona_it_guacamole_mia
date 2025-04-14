@@ -1,0 +1,18 @@
+.header.right button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 18px;
+}
+
+.header-right button:hover {
+    background-color: #008542;
+}
+
+.header-button{
+    background-color:#00cc68;
+    font-size: 18px;
+    margin-right: 10px;
+}

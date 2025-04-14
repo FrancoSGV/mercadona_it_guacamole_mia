@@ -6,9 +6,9 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <ul>
-                <li>Conversación 1</li>
-                <li>Conversación 2</li>
-                <li>Conversación 3</li>
+                <li className="sideText">Busqueda Mercadona Alcoy</li>
+                <li className="sideText">Productos sin Gluten</li>
+                <li className="sideText">Primeros pasos con MIA</li>
                 {/* Agregar dinámicamente más conversaciones */}
             </ul>
         </div>
