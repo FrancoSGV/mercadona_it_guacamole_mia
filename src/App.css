@@ -1,0 +1,122 @@
+/* Contenedor principal de la app */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Asegura que el contenido ocupe toda la pantalla */
+}
+
+/* Header */
+.header {
+  background-color: #f1f1f1;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10; /* Para que esté encima del contenido */
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+}
+
+.header-right button, .header-right input {
+  padding: 5px 10px;
+}
+
+/* Ajustes de margen superior para que no se superponga con el header */
+.main-content {
+  display: flex;
+  flex: 1;
+  margin-top: 60px; /* Para dar espacio debajo del header */
+  height: calc(100vh - 60px); /* Resta la altura del header */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 33.33%; /* 1/3 del ancho */
+  background-color: #e9e9e9;
+  padding: 20px;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  color: #007bff;
+}
+
+/* Chat Window */
+.chat-window {
+  flex: 2; /* Ocupa 2/3 del ancho */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-area textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.input-area button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.input-area button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column; /* En pantallas pequeñas, el chat y sidebar se apilan */
+    margin-top: 60px;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none; /* No borde a la derecha */
+  }
+
+  .chat-window {
+    width: 100%;
+  }
+}
