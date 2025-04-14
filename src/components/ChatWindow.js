@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './ChatWindow.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faCamera, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faCamera,faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-const ChatWindow = ({ username }) => {
+const ChatWindow = () => {
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
-
-    useEffect(() => {
-        const saludo = username
-            ? `¡Hola! ${username} ¿En qué te puedo ayudar?`
-            : '¡Hola! ¿En qué te puedo ayudar?';
-
-        setMessages([{ from: 'mia', text: saludo }]);
-    }, [username]);
+    const [messages, setMessages] = useState([
+        { from: 'mia', text: '¡Hola! ¿En qué te puedo ayudar?' }
+    ]);
 
     const handleSend = () => {
         if (message.trim() === '') return;
@@ -22,6 +16,7 @@ const ChatWindow = ({ username }) => {
         setMessages(prev => [...prev, { from: 'user', text: message }]);
         setMessage('');
 
+        // Procesar respuesta de MIA basada en palabra clave
         setTimeout(() => {
             let miaResponse = 'Lo siento, no entendí tu mensaje.';
             let image = null;
@@ -39,6 +34,7 @@ const ChatWindow = ({ username }) => {
             }
 
             if (userMsg.includes('paella')) {
+                // Llamada al backend para obtener ingredientes de la paella
                 fetch('http://localhost:8000/receta', {
                     method: 'POST',
                     headers: {
@@ -97,13 +93,16 @@ const ChatWindow = ({ username }) => {
                 return;
             }
 
+            // Fallback
             setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
 
             if (image) {
                 setMessages(prev => [...prev, { from: 'mia', image }]);
             }
         }, 800);
+
     };
+
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -111,15 +110,15 @@ const ChatWindow = ({ username }) => {
             handleSend();
         }
     };
-
     const handleButtonClick = (index) => {
         let responseText = '';
         let responseImage = '';
 
+        // Definir la respuesta basada en el botón clickeado
         switch (index) {
             case 0:
                 responseText = '¡Aquí puedes encontrar lo que buscas! 🥛';
-                responseImage = '/media/ejemplo.jpeg';
+                responseImage = '/media/ejemplo.jpeg';  // Aquí pondrías tu imagen si la necesitas
                 break;
             case 1:
                 responseText = 'Texto de opción B: Aquí puedes consultar los horarios.';
@@ -132,12 +131,13 @@ const ChatWindow = ({ username }) => {
                 break;
         }
 
+        // Añadir la respuesta al estado de los mensajes
         setMessages(prev => [
             ...prev,
             {
                 from: 'mia',
                 text: responseText,
-                image: responseImage,
+                image: responseImage, // Solo se añade la imagen si la variable responseImage tiene una URL válida
             }
         ]);
     };
@@ -150,9 +150,11 @@ const ChatWindow = ({ username }) => {
                         {msg.text && (
                             <p><strong>{msg.from === 'mia' ? 'MIA 😀' : 'Tú'}:</strong> {msg.text}</p>
                         )}
+
                         {msg.image && (
                             <img src={msg.image} alt="Respuesta visual" style={{ maxWidth: '200px', marginTop: '0.5rem', borderRadius: '8px' }} />
                         )}
+
                         {msg.type === 'buttons' && (
                             <div className="button-column">
                                 <p><strong>Por favor, elige una opción:</strong></p>
@@ -169,16 +171,22 @@ const ChatWindow = ({ username }) => {
 
             <div className="input-area">
                 <div className="text-area-container">
-                    <textarea
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyDown={handleKeyPress}
-                        placeholder="Escribe tu mensaje..."
-                    />
+        <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+            placeholder="Escribe tu mensaje..."
+        />
                     <div className="msg-buttons">
-                        <button><FontAwesomeIcon icon={faCamera} /></button>
-                        <button><FontAwesomeIcon icon={faMicrophone} /></button>
-                        <button onClick={handleSend}><FontAwesomeIcon icon={faPaperPlane} /></button>
+                        <button>
+                            <FontAwesomeIcon icon={faCamera}/>
+                        </button>
+                        <button>
+                            <FontAwesomeIcon icon={faMicrophone}/>
+                        </button>
+                        <button onClick={handleSend}>
+                            <FontAwesomeIcon icon={faPaperPlane}/>
+                        </button>
                     </div>
                 </div>
             </div>
