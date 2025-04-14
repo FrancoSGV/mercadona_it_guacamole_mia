@@ -2,14 +2,19 @@
 import React from 'react';
 import './Header.css'; // Estilos específicos para el Header
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCog,faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import {useLocation} from "react-router-dom";
 
 const Header = () => {
     const navigate = useNavigate();
+    const navigate2 = useNavigate();
 
     const handleLoginClick = () => {
         navigate('/login'); // Te lleva a la ruta de login
+    };
+    const handleExitClick = () => {
+        navigate2('/'); // Te lleva a la ruta de inicio
     };
     return (
         <header className="header">
@@ -17,6 +22,9 @@ const Header = () => {
                 alt="Logo Mercadona Guacamole Mia"
                 style={{height: '50px', objectFit: 'contain'}}/>
             <div className="header-right">
+                <button className="header-button" onClick={handleExitClick} title="Exit">
+                    <FontAwesomeIcon icon={faSignOut}/>
+                </button>
                 <button className="header-button" onClick={handleLoginClick} title="Login">
                     <FontAwesomeIcon icon={faUser}/>
                 </button>
