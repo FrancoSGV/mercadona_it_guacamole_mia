@@ -2,7 +2,7 @@
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Asegura que el contenido ocupe toda la pantalla */
+  height: 100vh; /* Asegura que el contenido ocupe toda a pantalla */
 }
 
 /* Header */
