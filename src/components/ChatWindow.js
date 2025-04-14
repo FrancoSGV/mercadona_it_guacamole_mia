@@ -74,7 +74,7 @@ const ChatWindow = () => {
                     from: 'mia',
                     type: 'buttons',
                     buttons: [
-                        { text: 'Añadir al carrito' }
+                        { text: 'Comprar Online' }
                     ]
                 });
 
