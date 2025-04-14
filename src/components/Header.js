@@ -5,10 +5,12 @@ import './Header.css'; // Estilos específicos para el Header
 const Header = () => {
     return (
         <header className="header">
-            <h1>Mercadona IT - Guacamole Mia</h1>
+            <img src="/media/logo_mia.png"
+                alt="Logo Mercadona Guacamole Mia"
+                style={{height: '50px', objectFit: 'contain'}}/>
             <div className="header-right">
                 <button>Login</button>
-                <input type="text" placeholder="Buscar..." />
+                <input type="text" placeholder="Buscar..."/>
             </div>
         </header>
     );
