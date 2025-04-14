@@ -27,6 +27,15 @@ const ChatWindow = () => {
                 return;
             }
 
+            if(userMsg.includes("recomiendame")){
+                miaResponse = '¡Claro! Aqui esta un carrito que he armado para ti😊:' +
+                    '\n 1.- Zanahorias' +
+                    '\n 2.- Yogurt Griego' +
+                    '\n 3.- Tortilla de Patatas (sin cebolla 😉)' +
+                    '\n 4.- Coca Cola Zero';
+                setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
+                return;
+            }
             if (userMsg.includes('receta')) {
                 miaResponse = '¡Claro! ¿Qué receta quieres hacer? 🍽️';
                 setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
@@ -148,11 +157,20 @@ const ChatWindow = () => {
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`message ${msg.from}`}>
                         {msg.text && (
-                            <p><strong>{msg.from === 'mia' ? 'MIA 😀' : 'Tú'}:</strong> {msg.text}</p>
+                            <p>
+                                <strong>{msg.from === 'mia' ? 'MIA 😀' : 'Tú'}:</strong>{' '}
+                                {msg.text.split('\n').map((line, i) => (
+                                    <span key={i}>
+      {line}
+                                        <br/>
+    </span>
+                                ))}
+                            </p>
                         )}
 
                         {msg.image && (
-                            <img src={msg.image} alt="Respuesta visual" style={{ maxWidth: '200px', marginTop: '0.5rem', borderRadius: '8px' }} />
+                            <img src={msg.image} alt="Respuesta visual"
+                                 style={{maxWidth: '200px', marginTop: '0.5rem', borderRadius: '8px' }} />
                         )}
 
                         {msg.type === 'buttons' && (
