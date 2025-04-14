@@ -2,7 +2,7 @@ from supabase import create_client, Client
 import pandas as pd
 
 
-#______________________Getting the data______________________
+#___________________Getting the data______________________
 data = None
 def get_data():
     global data
