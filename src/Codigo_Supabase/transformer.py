@@ -1,6 +1,7 @@
 import requests
+import baseDatos
 
-API_KEY = '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'
+API_KEY = 'sk-983135ab455840cfa9661813981f2807'
 API_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
 headers = {
@@ -29,3 +30,4 @@ if __name__ == "__main__":
     reply = chat(user_prompt)
     if reply:
         print("DeepSeek response:\n", reply)
+        print(baseDatos.get_column_values(baseDatos.data, ""))

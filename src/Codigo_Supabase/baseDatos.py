@@ -23,6 +23,12 @@ def get_column_values(df: pd.DataFrame,name:str) -> set:
     result = set(df[name])
     return result
 
+def to_lower_case(stock):
+    result = []
+    for element in stock:
+        result.append(element.lower())
+    return result
+
 
 #We get the data
 get_data()
