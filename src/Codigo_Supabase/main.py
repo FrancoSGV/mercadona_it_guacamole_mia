@@ -1,20 +1,23 @@
 import baseDatos
-
 import requests
 import json
+import time 
 
 respuesta_completa = ""
-
+#We ask the llama api about information
 response = requests.post(
     "http://localhost:11434/api/generate",
     json={
         "model": "llama3.2",
-        "prompt": "Como hago una paella? dame la lista de ingredientes en el siguiente formato lista python: [ingrediente1,ingrediente2,ingrediente3,... ]--> dame solo los ingredientes, nada más, no me respondas nada textual, solo ingredientes",
+        "prompt": "Un filete de carne? dame la lista de ingredientes en el siguiente formato lista python: [ingrediente1,ingrediente2,ingrediente3,... ]--> dame solo los ingredientes, nada más, no me respondas nada textual, solo ingredientes",
         "stream": True
     },
     stream=True  # <- esto es clave
 )
 
+
+print("\n\nRespuesta modelo LLM:")
+time.sleep(5)
 for line in response.iter_lines():
     if line:
         data = json.loads(line.decode("utf-8"))
@@ -22,26 +25,13 @@ for line in response.iter_lines():
         print(chunk, end="", flush=True)
         respuesta_completa += chunk
 
-print("\n\nRespuesta completa guardada en variable:")
-print(respuesta_completa)
 
-'''
-#AI prompt and reply
-request = "Paella"
-reply = ["Arroz", "Sal", "Patatas"]
+#Processing the data
+import ast
+ingredientes = ast.literal_eval(respuesta_completa)
 
-#Data management
-stock = baseDatos.get_column_values(baseDatos.data, "name")
+#Stock
+print("\n\nElementos en stock y su información:")
+print(baseDatos.data[baseDatos.data["name"].isin(ingredientes)])
 
 
-available = []
-for element in stock:
-    if element in reply:
-        available.append(element)
-
-print(available)
-
-result_info = baseDatos.data[baseDatos.data["name"] in available]
-
-print(result_info)
-'''

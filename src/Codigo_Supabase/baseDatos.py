@@ -17,7 +17,6 @@ def get_data():
     data = response.data
     df = pd.DataFrame(data)
     data = df
-    print(data.head())
 
 def get_column_values(df: pd.DataFrame,name:str) -> set:
     result = set(df[name])
