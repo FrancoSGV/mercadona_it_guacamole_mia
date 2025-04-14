@@ -26,6 +26,61 @@ const ChatWindow = () => {
                 setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
                 return;
             }
+            if (userMsg.includes('receta')) {
+                miaResponse = '¡Claro! ¿Qué receta quieres hacer? 🍽';
+                setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
+                return;
+            }
+
+            if (userMsg.includes('paella')) {
+                const messagesToSend = [];
+
+                // Ingredientes
+                messagesToSend.push({
+                    from: 'mia',
+                    text: 'Para una paella necesitas: arroz, ajo, pimienta verde, pimienta roja, pollo, aceite de oliva, sal y azafrán.'
+                });
+
+                // Imagen opcional (si hay)
+                if (image) {
+                    messagesToSend.push({ from: 'mia', image });
+                }
+
+                // Buscando en el stock
+                messagesToSend.push({
+                    from: 'mia',
+                    text: '🔎 Buscando en el stock...'
+                });
+
+                // Resultado de búsqueda
+                messagesToSend.push({
+                    from: 'mia',
+                    text: '✅ Se han encontrado 3 ingredientes disponibles en la tienda de Canales.'
+                });
+
+                setMessages(prev => [...prev, ...messagesToSend]);
+                return;
+            }
+
+            if (userMsg.includes('online')) {
+                const messagesToSend = [];
+
+                messagesToSend.push({
+                    from: 'mia',
+                    text: 'Perfecto, puedes añadir los ingredientes al carrito y comprarlos online 🛒'
+                });
+
+                messagesToSend.push({
+                    from: 'mia',
+                    type: 'buttons',
+                    buttons: [
+                        { text: 'Añadir al carrito' }
+                    ]
+                });
+
+                setMessages(prev => [...prev, ...messagesToSend]);
+                return;
+            }
 
             if(userMsg.includes("recomiendame")){
                 miaResponse = '¡Claro! Aqui esta un carrito que he armado para ti😊:' +
