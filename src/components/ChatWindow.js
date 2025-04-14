@@ -21,11 +21,61 @@ const ChatWindow = () => {
 
             if (userMsg.includes('hola')) {
                 miaResponse = '¡Hola! Soy MIA, el Asistente con IA de Mercadona 🧠🛒';
-            } else if (userMsg.includes('leche')) {
+                setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
+                return;
+            }
+
+            if (userMsg.includes('receta')) {
+                miaResponse = '¡Claro! ¿Qué receta quieres hacer? 🍽️';
+                setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
+                return;
+            }
+
+            if (userMsg.includes('paella')) {
+                // Llamada al backend para obtener ingredientes de la paella
+                fetch('http://localhost:8000/receta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ receta: 'paella' })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        const ingredientes = data.ingredientes?.join(', ') || 'ninguno';
+                        const disponibles = data.disponibles?.join(', ') || '';
+
+                        let respuesta = `Para la paella necesitas: ${ingredientes}.`;
+
+                        if (disponibles.length > 0) {
+                            respuesta += ` Puedes hacer la receta con: ${disponibles}. ✅`;
+                        } else {
+                            respuesta += ` Lo siento, no hay stock de los ingredientes necesarios. ❌`;
+                        }
+
+                        setMessages(prev => [...prev, { from: 'mia', text: respuesta }]);
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener ingredientes:', error);
+                        setMessages(prev => [...prev, { from: 'mia', text: 'Hubo un error al consultar los ingredientes. 😢' }]);
+                    });
+
+                return;
+            }
+
+            if (userMsg.includes('leche')) {
                 miaResponse = '¡Claro! ¿Me permites acceder a tu ubicación? 🥛';
-            } else if (userMsg.includes('no')) {
-                miaResponse = '¡No hay problema! ¿Me puedes indicar en que sede de Mercadona te encuentras?';
-            } else if (userMsg.includes('paterna')) {
+                setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
+                return;
+            }
+
+            if (userMsg.includes('no')) {
+                miaResponse = '¡No hay problema! ¿Me puedes indicar en qué sede de Mercadona te encuentras?';
+                setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
+                return;
+            }
+
+            if (userMsg.includes('paterna')) {
                 setMessages(prev => [
                     ...prev,
                     {
@@ -40,17 +90,15 @@ const ChatWindow = () => {
                 ]);
                 return;
             }
-            else if (userMsg.includes('leche')) {
-                miaResponse = '¡Aquí puedes encontrar lo que buscas! 🥛';
-                image = '/media/ejemplo.jpeg';
-            }
 
+            // Fallback
             setMessages(prev => [...prev, { from: 'mia', text: miaResponse }]);
 
             if (image) {
                 setMessages(prev => [...prev, { from: 'mia', image }]);
             }
         }, 800);
+
     };
 
 
